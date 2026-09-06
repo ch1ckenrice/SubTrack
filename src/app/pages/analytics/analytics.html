@@ -1,0 +1,106 @@
+<section class="analytics-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Insights</p>
+      <h2>Analytics</h2>
+    </div>
+
+    <p class="page-description">Understand where your recurring budget goes each month.</p>
+  </header>
+
+  <div class="analytics-grid">
+    <article class="insight-card">
+      <span>Most expensive </span>
+      @if (mostExpensiveSubscription()) {
+        <strong>{{ mostExpensiveSubscription()?.name }}</strong>
+        <p>
+          {{
+            formatMoney(mostExpensiveSubscription()!.price, mostExpensiveSubscription()!.currency)
+          }}
+        </p>
+      } @else {
+        <strong>No data</strong>
+        <p>Add subscriptions to see insights.</p>
+      }
+    </article>
+
+    <article class="insight-card">
+      <span>Billing cycles </span>
+      <strong>{{ billingCycleStats().monthlyCount }} monthly</strong>
+      <p>{{ billingCycleStats().yearlyCount }} yearly</p>
+    </article>
+  </div>
+  <section class="category-section">
+    <div>
+      <p class="eyebrow">Category spend</p>
+      <h3>Monthly cost by category</h3>
+    </div>
+    @if (categoryTotals().length === 0) {
+      <article class="empty-state">
+        <h4>No category data yet</h4>
+        <p>Add subscriptions to generate spending analytics.</p>
+      </article>
+    } @else {
+      <div class="category-list">
+        @for (categoryTotal of categoryTotals(); track categoryTotal.category; let index = $index) {
+          <article class="category-row">
+            <div class="category-meta">
+              <strong>{{ getCategoryLabel(categoryTotal.category) }}</strong>
+              <span>{{ formatMoney(categoryTotal.total) }}/month</span>
+            </div>
+
+            <div class="bar-track">
+              <span
+                class="bar-fill"
+                [style.width.%]="(categoryTotal.total / highestCategoryTotal()) * 100"
+                [style.animation-delay.ms]="index * 90"
+              ></span>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </section>
+  <section class="pie-section">
+    <div>
+      <p class="eyebrow">Distribution</p>
+      <h3>Spending split</h3>
+    </div>
+    @if (categoryTotals().length === 0) {
+      <article class="empty-state">
+        <h4>No chart data yet</h4>
+        <p>Add subscriptions to see spending distribution.</p>
+      </article>
+    } @else {
+      <div class="pie-layout">
+        <div class="donut-chart">
+          <svg viewBox="0 0 42 42">
+            @for (segment of pieSegments(); track segment.category; let index = $index) {
+              <path
+                class="donut-segment"
+                [attr.d]="segment.path"
+                [attr.fill]="segment.color"
+                [style.animation-delay.ms]="index * 120"
+              />
+            }
+          </svg>
+          <div class="donut-center">
+            <span>Total</span>
+            <strong>{{ totalCategorySpend().toFixed(2) }}</strong>
+            <small>USD/mo</small>
+          </div>
+        </div>
+
+        <div class="pie-legend">
+          @for (segment of pieSegments(); track segment.category) {
+            <div class="legend-row">
+              <span class="legend-dot" [style.background]="segment.color"></span>
+              <strong>{{ getCategoryLabel(segment.category) }}</strong>
+              <span>{{ segment.percent.toFixed(1) }}%</span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </section>
+</section>

@@ -1,0 +1,124 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.subscription-card {
+  height: 100%;
+  display: flex;
+  gap: 22px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+
+  p {
+    margin: 0;
+    color: var(--text-muted);
+  }
+}
+
+.card-top {
+  flex: 1;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.left-data {
+  flex: 1;
+}
+
+.name-and-dot {
+  display: flex;
+  gap: 5px;
+  margin: 0;
+  align-items: center;
+  max-width: min-content;
+
+  h3 {
+    margin: 0 0 4px;
+    font-size: 18px;
+  }
+}
+
+.service-dot {
+  width: 13px;
+  height: 13px;
+  flex: 0 0 auto;
+  border-radius: 25px;
+}
+
+.card-bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+
+  strong {
+    font-size: 22px;
+  }
+
+  span {
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: var(--surface-muted);
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 650;
+  }
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.card-actions button {
+  min-height: 34px;
+  padding: 0 10px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.edit-button {
+  border: 1px solid var(--border);
+  background: #ffffff;
+  color: var(--text);
+}
+
+.edit-button:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.delete-button {
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  background: rgba(220, 38, 38, 0.08);
+  color: var(--danger);
+}
+
+.delete-button:hover {
+  background: rgba(220, 38, 38, 0.14);
+}
+
+@media (max-width: 520px) {
+  .subscription-card {
+    padding: 16px;
+  }
+
+  .card-top {
+    display: grid;
+  }
+
+  .card-bottom {
+    align-items: stretch;
+  }
+
+  .card-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

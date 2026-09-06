@@ -1,0 +1,153 @@
+<section class="subscriptions-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Subscription manager</p>
+      <h2>Subscriptions</h2>
+    </div>
+
+    <p class="page-description">Track recurring payments, billing dates, and monthly costs.</p>
+  </header>
+
+  <div class="summary-grid">
+    <article class="summary-card">
+      <span>Total subscriptions</span>
+      <strong>{{ totalSubscriptions() }}</strong>
+    </article>
+
+    <article class="summary-card">
+      <span>Monthly cost</span>
+      <strong>{{ formatMoney(monthlyTotal()) }}</strong>
+    </article>
+
+    <article class="summary-card">
+      <span>Yearly cost</span>
+      <strong>{{ formatMoney(yearlyTotal()) }}</strong>
+    </article>
+  </div>
+
+  <section class="filters-panel">
+    <label class="filter-field">
+      <span>Search</span>
+      <input
+        type="search"
+        placeholder="Search subscriptions"
+        [value]="searchTerm()"
+        (input)="onSearchChange($event)"
+      />
+    </label>
+
+    <label class="filter-field">
+      <span>Category</span>
+      <select [value]="selectedCategory()" (change)="onCategoryChange($event)">
+        <option value="all">All categories</option>
+        <option value="entertainment">Entertainment</option>
+        <option value="music">Music</option>
+        <option value="education">Education</option>
+        <option value="productivity">Productivity</option>
+        <option value="cloud">Cloud</option>
+        <option value="design">Design</option>
+        <option value="other">Other</option>
+      </select>
+    </label>
+
+    <label class="filter-field">
+      <span>Billing cycle</span>
+      <select [value]="selectedBillingCycle()" (change)="onBillingCycleChange($event)">
+        <option value="all">All cycles</option>
+        <option value="monthly">Monthly</option>
+        <option value="yearly">Yearly</option>
+      </select>
+    </label>
+  </section>
+
+  <form class="subscription-form" [formGroup]="subscriptionForm" (ngSubmit)="onSubmit()">
+    <label class="form-field">
+      <span>Name</span>
+      <input type="text" formControlName="name" placeholder="Name" />
+
+      @if (isInvalid('name')) {
+        <small>Name must contain at least 2 characters.</small>
+      }
+    </label>
+
+    <label class="form-field">
+      <span>Price</span>
+      <input type="number" formControlName="price" placeholder="Price" />
+
+      @if (isInvalid('price')) {
+        <small>Price must be greater than 0.</small>
+      }
+    </label>
+
+    <label class="form-field">
+      <span>Currency</span>
+      <select formControlName="currency">
+        <option value="USD">USD</option>
+      </select>
+    </label>
+
+    <label class="form-field">
+      <span>Category</span>
+      <select formControlName="category">
+        <option value="entertainment">Entertainment</option>
+        <option value="music">Music</option>
+        <option value="education">Education</option>
+        <option value="productivity">Productivity</option>
+        <option value="cloud">Cloud</option>
+        <option value="design">Design</option>
+        <option value="other">Other</option>
+      </select>
+    </label>
+
+    <label class="form-field">
+      <span>Start of Subscription</span>
+      <input type="date" formControlName="nextBillingDate" />
+
+      @if (isInvalid('nextBillingDate')) {
+        <small>Choose next billing date.</small>
+      }
+    </label>
+
+    <label class="form-field">
+      <span>Billing Cycle</span>
+      <select formControlName="billingCycle">
+        <option value="monthly">Monthly</option>
+        <option value="yearly">Yearly</option>
+      </select>
+    </label>
+
+    <button type="submit" [disabled]="subscriptionForm.invalid">
+      {{ editingSubscriptionId ? 'Save changes' : 'Add subscription' }}
+    </button>
+
+    @if (editingSubscriptionId) {
+      <button type="button" class="secondary-button" (click)="cancelEdit()">Cancel</button>
+    }
+  </form>
+
+  @if (subscriptions().length === 0) {
+    <article class="empty-state">
+      <div class="empty-icon">+</div>
+      <h3>No subscriptions yet</h3>
+      <p>Add your first recurring payment to start tracking your monthly budget.</p>
+    </article>
+  } @else {
+    @if (filteredSubscriptions().length === 0) {
+      <article class="empty-state">
+        <div class="empty-icon">?</div>
+        <h3>No matches found</h3>
+        <p>Try changing your search or filters.</p>
+      </article>
+    } @else {
+      <div class="subscription-grid">
+        @for (subscription of filteredSubscriptions(); track subscription.id) {
+          <app-subscription-card
+            [subscription]="subscription"
+            (delete)="onDeleteSubscription($event)"
+            (edit)="onEditSubscription($event)"
+          />
+        }
+      </div>
+    }
+  }
+</section>

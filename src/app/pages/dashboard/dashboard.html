@@ -1,0 +1,59 @@
+<section class="dashboard-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Overview</p>
+      <h2>Dashboard</h2>
+    </div>
+    <p class="page-description">Your recurring payments at a glance.</p>
+  </header>
+  <div class="dashboard-grid">
+    <article class="metric-card">
+      <span>Total subscriptions </span>
+      <strong>{{ totalSubscriptions() }}</strong>
+    </article>
+
+    <article class="metric-card">
+      <span>Monthly spend </span>
+      <strong>{{ formatMoney(monthlyTotal()) }}</strong>
+    </article>
+
+    <article class="metric-card">
+      <span>Yearly spend </span>
+      <strong>{{ formatMoney(yearlyTotal()) }}</strong>
+    </article>
+  </div>
+
+  <article class="budget-card">
+    <div class="budget-card-header">
+      <div>
+        <p class="eyebrow">Budget usage</p>
+        <h3>{{ budgetStatus() }}</h3>
+      </div>
+      <strong>{{ budgetUsagePercent().toFixed(0) }}%</strong>
+    </div>
+    <div class="budget-track">
+      <span class="budget-fill" [style.width.%]="budgetUsagePercent()"></span>
+    </div>
+    <p>
+      {{ formatMoney(monthlyTotal()) }} used of {{ formatMoney(settings().monthlyBudget) }} monthly
+      budget.
+    </p>
+  </article>
+
+  <article class="upcoming-card">
+    <div>
+      <p class="eyebrow">Next payment</p>
+
+      @if (upcomingSubscription(); as subscription) {
+        <h3>{{ subscription.name }}</h3>
+        <p>{{ formatDateKey(subscription.nextBillingDate) }}</p>
+      } @else {
+        <h3>No upcoming payments</h3>
+        <p>Add subscriptions to see your next billing date.</p>
+      }
+    </div>
+    @if (upcomingSubscription(); as subscription) {
+      <strong>{{ formatMoney(subscription.price, subscription.currency) }}</strong>
+    }
+  </article>
+</section>

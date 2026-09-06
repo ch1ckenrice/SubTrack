@@ -1,0 +1,149 @@
+<section class="calendar-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Payment schedule</p>
+      <h2>Calendar</h2>
+    </div>
+
+    <p class="page-description">See which recurring payments are coming next.</p>
+  </header>
+  @if (upcomingSubscriptions().length === 0) {
+    <article class="empty-state">
+      <h3>No upcoming payments</h3>
+      <p>Add subscriptions to build your payment schedule.</p>
+    </article>
+  } @else {
+    <div class="payment-list">
+      @for (subscription of upcomingSubscriptions(); track subscription.id) {
+        <article class="payment-row">
+          <div>
+            <h3>{{ subscription.name }}</h3>
+            <p>{{ getCategoryLabel(subscription.category) }}</p>
+          </div>
+          <div class="payment-meta">
+            @if (isDueSoon(subscription.nextBillingDate)) {
+              <span class="due-soon">Due soon</span>
+            }
+            <strong>{{ formatDateKey(subscription.nextBillingDate) }}</strong>
+            <span>{{ formatMoney(subscription.price, subscription.currency) }}</span>
+          </div>
+        </article>
+      }
+    </div>
+  }
+
+  <section class="month-calendar">
+    <header class="calendar-heading">
+      <div>
+        <p class="eyebrow">Month view</p>
+        <h3>{{ monthLabel() }}</h3>
+      </div>
+
+      <div class="calendar-actions">
+        <button type="button" (click)="goToPreviousMonth()">
+          <svg
+            viewBox="0 0 24 24"
+            id="_24x24_On_Light_Next"
+            data-name="24x24/On Light/Next"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="#000000"
+            transform="rotate(180)"
+          >
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+              <rect id="view-box" width="24" height="24" fill="#141124" opacity="0"></rect>
+              <path
+                id="Shape"
+                d="M10.22,9.28a.75.75,0,0,1,0-1.06l2.72-2.72H.75A.75.75,0,0,1,.75,4H12.938L10.22,1.281A.75.75,0,1,1,11.281.22l4,4a.749.749,0,0,1,0,1.06l-4,4a.75.75,0,0,1-1.061,0Z"
+                transform="translate(4.25 7.25)"
+                fill="#141124"
+              ></path>
+            </g>
+          </svg>
+        </button>
+        <button type="button" (click)="goToNextMonth()">
+          <svg
+            viewBox="0 0 24 24"
+            id="_24x24_On_Light_Next"
+            data-name="24x24/On Light/Next"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="#000000"
+            transform="rotate(0)"
+          >
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+              <rect id="view-box" width="24" height="24" fill="#141124" opacity="0"></rect>
+              <path
+                id="Shape"
+                d="M10.22,9.28a.75.75,0,0,1,0-1.06l2.72-2.72H.75A.75.75,0,0,1,.75,4H12.938L10.22,1.281A.75.75,0,1,1,11.281.22l4,4a.749.749,0,0,1,0,1.06l-4,4a.75.75,0,0,1-1.061,0Z"
+                transform="translate(4.25 7.25)"
+                fill="#141124"
+              ></path>
+            </g>
+          </svg>
+        </button>
+      </div>
+    </header>
+    <div class="weekday-grid">
+      <span>Mon</span>
+      <span>Tue</span>
+      <span>Wed</span>
+      <span>Thu</span>
+      <span>Fri</span>
+      <span>Sat</span>
+      <span>Sun</span>
+    </div>
+    <div class="calendar-grid">
+      @for (day of monthDays(); track day.id) {
+        @if (day.day === null) {
+          <span class="calendar-day calendar-day-empty"></span>
+        } @else {
+          <button
+            class="calendar-day"
+            [class.has-payment]="getSubscriptionsForDate(day.dateKey).length > 0"
+            [class.is-selected]="selectedDateKey() === day.dateKey"
+            [class.is-paid]="hasPaidPayment(day.dateKey)"
+            [class.is-not-paid]="
+              getSubscriptionsForDate(day.dateKey).length > 0 && !hasPaidPayment(day.dateKey)
+            "
+            type="button"
+            (click)="selectCalendarDate(day.dateKey)"
+          >
+            <span class="day-number">{{ day.day }}</span>
+            @if (getSubscriptionsForDate(day.dateKey).length > 0) {
+              <span class="payment-dot"></span>
+            }
+          </button>
+        }
+      }
+    </div>
+    <aside class="day-panel">
+      @if (selectedDateKey()) {
+        <div class="day-panel-header">
+          <span>Selected date </span>
+          <strong>{{ selectedDateKey() }}</strong>
+        </div>
+        @if (selectedDateSubscriptions().length > 0) {
+          <div class="day-payment-list">
+            @for (subscription of selectedDateSubscriptions(); track subscription.id) {
+              <article class="day-payment">
+                <div>
+                  <h4>{{ subscription.name }}</h4>
+                  <p>{{ getCategoryLabel(subscription.category) }}</p>
+                </div>
+                <span>{{ hasPaidPayment(selectedDateKey()!) ? 'Paid' : 'Upcoming' }}</span>
+                <strong>{{ formatMoney(subscription.price, subscription.currency) }}</strong>
+              </article>
+            }
+          </div>
+        } @else {
+          <p class="day-panel-empty">No payments scheduled for this day.</p>
+        }
+      } @else {
+        <p class="day-panel-empty">Select a marked day to preview payments.</p>
+      }
+    </aside>
+  </section>
+</section>

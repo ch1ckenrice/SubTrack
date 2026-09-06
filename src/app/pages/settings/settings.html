@@ -1,0 +1,47 @@
+<section class="settings-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Preferences</p>
+      <h2>Settings</h2>
+    </div>
+
+    <p class="page-description">Configure budget limits and app preferences.</p>
+  </header>
+
+  <form class="settings-card" [formGroup]="settingsForm" (ngSubmit)="onSubmit()">
+    <label class="form-field">
+      <span>Monthly budget</span>
+      <input type="number" formControlName="monthlyBudget" />
+
+      @if (isInvalid('monthlyBudget')) {
+        <small>Monthly budget must be greater than 0.</small>
+      }
+    </label>
+
+    <label class="form-field">
+      <span>Reminder window</span>
+      <select formControlName="reminderDays">
+        <option [ngValue]="3">3 days</option>
+        <option [ngValue]="7">7 days</option>
+        <option [ngValue]="14">14 days</option>
+      </select>
+    </label>
+
+    <div class="settings-preview">
+      <span>Current Budget</span>
+      <strong>{{ settings().monthlyBudget }} {{ settings().currency }}</strong>
+    </div>
+
+    <button type="submit" [disabled]="settingsForm.invalid">Save settings</button>
+  </form>
+
+  <section class="danger-zone">
+    <div>
+      <p class="eyebrow">Danger zone</p>
+      <h3>Reset local data</h3>
+      <p>Clear subscriptions and restore default settings on this device.</p>
+    </div>
+
+    <button type="button" (click)="resetLocalData()">Reset data</button>
+  </section>
+</section>

@@ -1,0 +1,167 @@
+.dashboard-page {
+  display: grid;
+  gap: 24px;
+}
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: end;
+
+  h2 {
+    margin: 0;
+    font-size: 34px;
+  }
+}
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.page-description {
+  max-width: 380px;
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.metric-card,
+.upcoming-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+.metric-card {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+  text-align: center;
+
+  span {
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 650;
+  }
+
+  strong {
+    font-size: 26px;
+  }
+}
+.upcoming-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: center;
+  padding: 22px;
+
+  h3 {
+    margin: 0 0 6px;
+    font-size: 24px;
+  }
+
+  p {
+    margin: 0;
+    color: var(--text-muted);
+  }
+
+  strong {
+    font-size: 28px;
+  }
+}
+.budget-card {
+  display: grid;
+  gap: 14px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+
+  p {
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+}
+
+.budget-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: center;
+
+  h3 {
+    margin: 0;
+    font-size: 24px;
+  }
+
+  strong {
+    font-size: 28px;
+  }
+}
+
+.budget-track {
+  height: 12px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--surface-muted);
+}
+
+.budget-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--primary);
+  transform-origin: left;
+  animation: grow-bar 700ms ease both;
+}
+@keyframes grow-bar {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+@media (max-width: 760px) {
+  .page-header {
+    display: grid;
+
+    h2 {
+      font-size: 28px;
+    }
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .upcoming-card {
+    display: grid;
+  }
+  .budget-card-header {
+    display: grid;
+  }
+}
+
+@media (max-width: 420px) {
+  .metric-card,
+  .budget-card,
+  .upcoming-card {
+    padding: 16px;
+  }
+
+  .metric-card strong,
+  .budget-card-header strong,
+  .upcoming-card strong {
+    font-size: 24px;
+  }
+}

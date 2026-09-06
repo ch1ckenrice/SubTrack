@@ -1,0 +1,22 @@
+<article class="subscription-card">
+  <div class="card-top">
+    <div class="left-data">
+      <div class="name-and-dot">
+        <h3>{{ subscription().name }}</h3>
+        <span class="service-dot" [style.background]="subscription().color"></span>
+      </div>
+
+      <p>{{ getCategoryLabel(subscription().category) }}</p>
+    </div>
+
+    <div class="card-bottom">
+      <strong>{{ formatMoney(subscription().price, subscription().currency) }}</strong>
+      <span>{{ getBillingCycleLabel(subscription().billingCycle) }}</span>
+
+      <div class="card-actions">
+        <button class="edit-button" type="button" (click)="onEdit()">Edit</button>
+        <button class="delete-button" type="button" (click)="onDelete()">Delete</button>
+      </div>
+    </div>
+  </div>
+</article>

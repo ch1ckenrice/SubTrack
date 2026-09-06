@@ -1,59 +1,106 @@
-# Subtrack
+# SubTrack
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.3.
+SubTrack is a responsive Angular portfolio project for tracking recurring subscriptions, upcoming payments, monthly spending, and budget usage.
 
-## Development server
+The goal of this project is to practice modern Angular features through a realistic product-style app instead of a simple demo.
 
-To start a local development server, run:
+## Features
 
-```bash
-ng serve
-```
+- Add, edit, delete, search, and filter subscriptions
+- Track monthly and yearly billing cycles
+- Automatically move past billing dates forward
+- Keep paid payment history for past subscription dates
+- View upcoming payments in a calendar
+- Highlight paid and upcoming payment days
+- Analyze monthly spend by category
+- Display a spending distribution donut chart
+- Configure monthly budget and reminder window
+- Persist data in LocalStorage
+- Responsive layout for desktop, tablet, and mobile screens
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Tech Stack
 
-## Code scaffolding
+- Angular
+- TypeScript
+- Angular Signals
+- Reactive Forms
+- Standalone Components
+- SCSS
+- LocalStorage
+- Prettier
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## What I Practiced
 
-```bash
-ng generate component component-name
-```
+- Building a multi-page Angular application with routing
+- Managing state with Angular Signals and computed values
+- Creating reusable components
+- Working with strongly typed models
+- Building and validating reactive forms
+- Persisting user data locally
+- Handling dates and recurring billing logic
+- Creating responsive layouts with CSS Grid and Flexbox
+- Refactoring repeated formatting logic into shared utilities
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Getting Started
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+Install dependencies:
 
 ```bash
-ng e2e
+npm install
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Run the development server:
 
-## Additional Resources
+```bash
+npm start
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Open the app in the browser:
+
+```text
+http://localhost:4200
+```
+
+## Available Scripts
+
+Run the app locally:
+
+```bash
+npm start
+```
+
+Build the project:
+
+```bash
+npm run build
+```
+
+Format the codebase:
+
+```bash
+npm run format
+```
+
+Check formatting:
+
+```bash
+npm run format:check
+```
+
+Run tests:
+
+```bash
+npm test
+```
+
+## Project Status
+
+The main functionality is complete. The project includes subscription management, analytics, calendar views, settings, LocalStorage persistence, and responsive styling.
+
+## Screens
+
+- Dashboard — high-level budget and payment overview
+- Subscriptions — subscription CRUD, filters, and search
+- Calendar — recurring payment schedule
+- Analytics — category totals and spending split
+- Settings — budget, currency, reminder window, and reset controls
