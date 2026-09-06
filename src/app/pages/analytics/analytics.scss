@@ -1,6 +1,7 @@
 .analytics-page {
   display: grid;
   gap: 24px;
+  min-width: 0;
 }
 
 .page-header {
@@ -143,6 +144,7 @@
   grid-template-columns: 260px 1fr;
   gap: 24px;
   align-items: center;
+  min-width: 0;
 }
 
 .donut-chart {
@@ -210,8 +212,11 @@
   padding: 10px;
   border-radius: 8px;
   background: #f8fbff;
+  min-width: 0;
 
   strong {
+    min-width: 0;
+    overflow-wrap: anywhere;
     text-transform: capitalize;
   }
 
@@ -247,6 +252,10 @@
 }
 
 @media (max-width: 760px) {
+  .analytics-page {
+    gap: 20px;
+  }
+
   .page-header,
   .category-meta {
     display: grid;
@@ -257,7 +266,7 @@
   }
 
   .page-header h2 {
-    font-size: 28px;
+    font-size: 30px;
   }
   .pie-layout {
     grid-template-columns: 1fr;

@@ -1,6 +1,7 @@
 .subscriptions-page {
   display: grid;
   gap: 24px;
+  min-width: 0;
 }
 .page-header {
   display: flex;
@@ -138,7 +139,7 @@
 }
 .subscription-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
   gap: 16px;
   margin: 10px 0 0 0;
 }
@@ -203,10 +204,15 @@
 }
 
 @media (max-width: 640px) {
+  .subscriptions-page {
+    gap: 20px;
+  }
+
   .page-header {
     display: grid;
+
     h2 {
-      font-size: 28px;
+      font-size: 30px;
     }
   }
 

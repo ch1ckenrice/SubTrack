@@ -1,6 +1,7 @@
 .dashboard-page {
   display: grid;
   gap: 24px;
+  min-width: 0;
 }
 .page-header {
   display: flex;
@@ -132,11 +133,15 @@
   }
 }
 @media (max-width: 760px) {
+  .dashboard-page {
+    gap: 20px;
+  }
+
   .page-header {
     display: grid;
 
     h2 {
-      font-size: 28px;
+      font-size: 30px;
     }
   }
 

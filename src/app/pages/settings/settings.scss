@@ -1,6 +1,7 @@
 .settings-page {
   display: grid;
   gap: 24px;
+  min-width: 0;
 }
 
 .page-header {
@@ -160,13 +161,17 @@ button:disabled {
 }
 
 @media (max-width: 640px) {
+  .settings-page {
+    gap: 20px;
+  }
+
   .page-header,
   .danger-zone {
     display: grid;
   }
 
   .page-header h2 {
-    font-size: 28px;
+    font-size: 30px;
   }
 
   .settings-card {

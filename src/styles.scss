@@ -18,7 +18,9 @@
 html,
 body {
   margin: 0;
+  width: 100%;
   min-height: 100%;
+  overflow-x: hidden;
   font-family:
     Inter,
     ui-sans-serif,
@@ -29,6 +31,15 @@ body {
     sans-serif;
   background: var(--bg);
   color: var(--text);
+}
+
+body {
+  font-size: 16px;
+}
+
+app-root {
+  display: block;
+  width: 100%;
 }
 
 button,
