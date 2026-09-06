@@ -35,7 +35,14 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Build Angular app
-        run: npm run build -- --base-href "/${{ github.event.repository.name }}/"
+        run: |
+          BASE_HREF="/${{ github.event.repository.name }}/"
+
+          if [ "${{ github.event.repository.name }}" = "${{ github.repository_owner }}.github.io" ]; then
+            BASE_HREF="/"
+          fi
+
+          npm run build -- --base-href "$BASE_HREF"
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
