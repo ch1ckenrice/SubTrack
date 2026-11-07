@@ -15,8 +15,10 @@ The goal of this project is to practice modern Angular features through a realis
 - Analyze monthly spend by category
 - Display a spending distribution donut chart
 - Configure monthly budget and reminder window
-- Persist data in LocalStorage
+- Persist data in LocalStorage with safe recovery from unavailable or malformed stored data
 - Responsive layout for desktop, tablet, and mobile screens
+- Keyboard-visible focus states and reduced-motion support
+- Custom SubTrack favicon and application metadata
 
 ## Tech Stack
 
@@ -28,6 +30,7 @@ The goal of this project is to practice modern Angular features through a realis
 - SCSS
 - LocalStorage
 - Prettier
+- Vitest
 
 ## What I Practiced
 
@@ -95,7 +98,7 @@ npm test
 
 ## Project Status
 
-The main functionality is complete. The project includes subscription management, analytics, calendar views, settings, LocalStorage persistence, and responsive styling.
+The main functionality is complete. The project includes subscription management, analytics, calendar views, settings, resilient LocalStorage persistence, responsive styling, and basic automated test coverage.
 
 ## Screens
 
@@ -103,4 +106,4 @@ The main functionality is complete. The project includes subscription management
 - Subscriptions — subscription CRUD, filters, and search
 - Calendar — recurring payment schedule
 - Analytics — category totals and spending split
-- Settings — budget, currency, reminder window, and reset controls
+- Settings — budget, reminder window, and reset controls

@@ -87,8 +87,8 @@ export class Subscriptions {
       billingCycle: formValue.billingCycle,
       paidDates: this.editingSubscription?.paidDates ?? [],
       nextBillingDate: formValue.nextBillingDate,
-      status: 'active',
-      color: '#4f46e5',
+      status: this.editingSubscription?.status ?? 'active',
+      color: this.editingSubscription?.color ?? '#4f46e5',
     };
 
     if (this.editingSubscriptionId) {

@@ -2,7 +2,13 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { Subscription } from '../../models/subscription.model';
 import { SettingsService } from '../../services/settings.service';
 import { SubscriptionService } from '../../services/subscription.service';
-import { formatDateKey, formatMoney, getCategoryLabel, toDateKey } from '../../utils/formatters';
+import {
+  formatDateKey,
+  formatMoney,
+  getCategoryLabel,
+  parseDateKey,
+  toDateKey,
+} from '../../utils/formatters';
 
 @Component({
   selector: 'app-calendar',
@@ -71,8 +77,14 @@ export class Calendar {
   });
 
   isDueSoon(date: string) {
+    const billingDate = parseDateKey(date);
+
+    if (!billingDate) {
+      return false;
+    }
+
     const today = new Date();
-    const billingDate = new Date(date);
+    today.setHours(0, 0, 0, 0);
     const differenceInMs = billingDate.getTime() - today.getTime();
     const differenceInDays = Math.ceil(differenceInMs / (1000 * 60 * 60 * 24));
 
@@ -114,8 +126,12 @@ export class Calendar {
       return false;
     }
 
-    const calendarDate = new Date(dateKey);
-    const subscriptionDate = new Date(subscription.nextBillingDate);
+    const calendarDate = parseDateKey(dateKey);
+    const subscriptionDate = parseDateKey(subscription.nextBillingDate);
+
+    if (!calendarDate || !subscriptionDate) {
+      return false;
+    }
 
     if (subscription.billingCycle === 'yearly') {
       const sameDay = calendarDate.getDate() === subscriptionDate.getDate();

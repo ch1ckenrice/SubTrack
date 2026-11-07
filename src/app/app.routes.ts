@@ -12,4 +12,5 @@ export const routes: Routes = [
   { path: 'calendar', component: Calendar },
   { path: 'settings', component: Settings },
   { path: 'subscriptions', component: Subscriptions },
+  { path: '**', redirectTo: 'dashboard' },
 ];

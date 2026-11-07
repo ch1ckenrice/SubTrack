@@ -61,6 +61,10 @@ export class Analytics {
     startAngle: number,
     endAngle: number,
   ) {
+    if (endAngle - startAngle >= 359.999) {
+      return this.createFullDonutPath(centerX, centerY, outerRadius, innerRadius, startAngle);
+    }
+
     const outerStart = this.polarToCartesian(centerX, centerY, outerRadius, endAngle);
     const outerEnd = this.polarToCartesian(centerX, centerY, outerRadius, startAngle);
     const innerStart = this.polarToCartesian(centerX, centerY, innerRadius, startAngle);
@@ -72,6 +76,29 @@ export class Analytics {
       `A ${outerRadius} ${outerRadius} 0 ${largeArcFlag} 0 ${outerEnd.x} ${outerEnd.y}`,
       `L ${innerStart.x} ${innerStart.y}`,
       `A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 1 ${innerEnd.x} ${innerEnd.y}`,
+      'Z',
+    ].join(' ');
+  }
+
+  private createFullDonutPath(
+    centerX: number,
+    centerY: number,
+    outerRadius: number,
+    innerRadius: number,
+    startAngle: number,
+  ) {
+    const outerStart = this.polarToCartesian(centerX, centerY, outerRadius, startAngle);
+    const outerMiddle = this.polarToCartesian(centerX, centerY, outerRadius, startAngle + 180);
+    const innerStart = this.polarToCartesian(centerX, centerY, innerRadius, startAngle);
+    const innerMiddle = this.polarToCartesian(centerX, centerY, innerRadius, startAngle + 180);
+
+    return [
+      `M ${outerStart.x} ${outerStart.y}`,
+      `A ${outerRadius} ${outerRadius} 0 1 0 ${outerMiddle.x} ${outerMiddle.y}`,
+      `A ${outerRadius} ${outerRadius} 0 1 0 ${outerStart.x} ${outerStart.y}`,
+      `L ${innerStart.x} ${innerStart.y}`,
+      `A ${innerRadius} ${innerRadius} 0 1 1 ${innerMiddle.x} ${innerMiddle.y}`,
+      `A ${innerRadius} ${innerRadius} 0 1 1 ${innerStart.x} ${innerStart.y}`,
       'Z',
     ].join(' ');
   }

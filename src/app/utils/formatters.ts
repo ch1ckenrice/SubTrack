@@ -35,9 +35,29 @@ export function toDateKey(date: Date) {
   return `${year}-${month}-${day}`;
 }
 
+export function parseDateKey(dateKey: string) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateKey);
+
+  if (!match) {
+    return null;
+  }
+
+  const [, year, month, day] = match;
+  const date = new Date(Number(year), Number(month) - 1, Number(day));
+
+  return date.getFullYear() === Number(year) &&
+    date.getMonth() === Number(month) - 1 &&
+    date.getDate() === Number(day)
+    ? date
+    : null;
+}
+
 export function formatDateKey(dateKey: string) {
-  const [year, month, day] = dateKey.split('-').map(Number);
-  const date = new Date(year, month - 1, day);
+  const date = parseDateKey(dateKey);
+
+  if (!date) {
+    return dateKey;
+  }
 
   return date.toLocaleDateString('en-US', {
     month: 'short',

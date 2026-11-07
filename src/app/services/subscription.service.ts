@@ -1,6 +1,6 @@
 import { computed, Injectable, signal } from '@angular/core';
 import { Subscription, SubscriptionCategory } from '../models/subscription.model';
-import { toDateKey } from '../utils/formatters';
+import { parseDateKey, toDateKey } from '../utils/formatters';
 
 const STORAGE_KEY = 'subtrack_subscriptions';
 const INITIAL_SUBSCRIPTIONS: Subscription[] = [];
@@ -145,26 +145,40 @@ export class SubscriptionService {
   });
 
   private loadSubscriptions(): Subscription[] {
-    const savedSubscriptions = localStorage.getItem(STORAGE_KEY);
+    try {
+      const savedSubscriptions = localStorage.getItem(STORAGE_KEY);
 
-    if (!savedSubscriptions) {
-      return INITIAL_SUBSCRIPTIONS.map((subscription) =>
+      if (!savedSubscriptions) {
+        return INITIAL_SUBSCRIPTIONS.map((subscription) =>
+          this.normalizeSubscriptionDate(subscription),
+        );
+      }
+
+      const parsedSubscriptions: unknown = JSON.parse(savedSubscriptions);
+
+      if (!Array.isArray(parsedSubscriptions)) {
+        return [];
+      }
+
+      const subscriptions = parsedSubscriptions.filter(this.isValidSubscription);
+      const normalizedSubscriptions = subscriptions.map((subscription) =>
         this.normalizeSubscriptionDate(subscription),
       );
+
+      this.saveSubscriptions(normalizedSubscriptions);
+
+      return normalizedSubscriptions;
+    } catch {
+      return [];
     }
-
-    const subscriptions = JSON.parse(savedSubscriptions) as Subscription[];
-    const normalizedSubscriptions = subscriptions.map((subscription) =>
-      this.normalizeSubscriptionDate(subscription),
-    );
-
-    this.saveSubscriptions(normalizedSubscriptions);
-
-    return normalizedSubscriptions;
   }
 
   private saveSubscriptions(subscriptions: Subscription[]) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(subscriptions));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(subscriptions));
+    } catch {
+      // Keep the in-memory app usable when browser storage is unavailable.
+    }
   }
 
   private getTodayKey() {
@@ -175,16 +189,24 @@ export class SubscriptionService {
 
   private addBillingCycle(date: Date, billingCycle: Subscription['billingCycle']) {
     if (billingCycle === 'monthly') {
-      return new Date(date.getFullYear(), date.getMonth() + 1, date.getDate());
+      return this.createDateWithClampedDay(date.getFullYear(), date.getMonth() + 1, date.getDate());
     }
 
-    return new Date(date.getFullYear() + 1, date.getMonth(), date.getDate());
+    return this.createDateWithClampedDay(date.getFullYear() + 1, date.getMonth(), date.getDate());
   }
 
   private normalizeSubscriptionDate(subscription: Subscription): Subscription {
-    let billingDate = new Date(subscription.nextBillingDate);
+    const initialBillingDate = parseDateKey(subscription.nextBillingDate);
+
+    if (!initialBillingDate) {
+      return subscription;
+    }
+
+    let billingDate = initialBillingDate;
     const todayDateKey = this.getTodayKey();
-    const paidDates = [...(subscription.paidDates ?? [])];
+    const paidDates = Array.from(
+      new Set((subscription.paidDates ?? []).filter(parseDateKey)),
+    ).sort();
 
     while (toDateKey(billingDate) < todayDateKey) {
       const paidDateKey = toDateKey(billingDate);
@@ -201,5 +223,30 @@ export class SubscriptionService {
       paidDates,
       nextBillingDate: toDateKey(billingDate),
     };
+  }
+
+  private createDateWithClampedDay(year: number, month: number, day: number) {
+    const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
+
+    return new Date(year, month, Math.min(day, lastDayOfMonth));
+  }
+
+  private isValidSubscription(value: unknown): value is Subscription {
+    if (!value || typeof value !== 'object') {
+      return false;
+    }
+
+    const subscription = value as Partial<Subscription>;
+
+    return (
+      typeof subscription.id === 'string' &&
+      typeof subscription.name === 'string' &&
+      typeof subscription.price === 'number' &&
+      Number.isFinite(subscription.price) &&
+      (subscription.billingCycle === 'monthly' || subscription.billingCycle === 'yearly') &&
+      typeof subscription.nextBillingDate === 'string' &&
+      parseDateKey(subscription.nextBillingDate) !== null &&
+      Array.isArray(subscription.paidDates)
+    );
   }
 }

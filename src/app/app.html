@@ -1,13 +1,41 @@
 <div class="app-shell">
   <aside class="sidebar">
-    <h1>SubTrack</h1>
+    <a class="brand" routerLink="/dashboard" aria-label="SubTrack dashboard">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" focusable="false">
+          <rect width="32" height="32" rx="8" fill="#2563eb" />
+          <path
+            d="M9 12.5h14v11H9z"
+            fill="none"
+            stroke="white"
+            stroke-width="2"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M12 9v5M20 9v5M12.5 18l2.3 2.3 4.8-5.1"
+            fill="none"
+            stroke="white"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+          />
+        </svg>
+      </span>
+      <span>SubTrack</span>
+    </a>
 
-    <nav>
-      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-      <a routerLink="/subscriptions" routerLinkActive="active">Subscriptions</a>
-      <a routerLink="/calendar" routerLinkActive="active">Calendar</a>
-      <a routerLink="/analytics" routerLinkActive="active">Analytics</a>
-      <a routerLink="/settings" routerLinkActive="active">Settings</a>
+    <nav aria-label="Main navigation">
+      <a routerLink="/dashboard" routerLinkActive="active" ariaCurrentWhenActive="page"
+        >Dashboard</a
+      >
+      <a routerLink="/subscriptions" routerLinkActive="active" ariaCurrentWhenActive="page"
+        >Subscriptions</a
+      >
+      <a routerLink="/calendar" routerLinkActive="active" ariaCurrentWhenActive="page">Calendar</a>
+      <a routerLink="/analytics" routerLinkActive="active" ariaCurrentWhenActive="page"
+        >Analytics</a
+      >
+      <a routerLink="/settings" routerLinkActive="active" ariaCurrentWhenActive="page">Settings</a>
     </nav>
   </aside>
 
